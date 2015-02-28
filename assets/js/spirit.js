@@ -1,10 +1,10 @@
 Spirit = (function(){
   var gui = require('nw.gui'),
-      Twig = require('twig').twig,
+      Twig = require('twig'),
       render = Twig.twig,
       fs = require('fs'),
       cache = {templates: {}},
-      session = {games: [{title: "The Dank Game", title: "Another Dank Game"}]};
+      session = {games: [{title: "The Dank Game"}, {title: "Another Dank Game"}]};
 
   var loadTemplate = function(template, templateData, container){
     templateData = templateData || {};
@@ -14,8 +14,7 @@ Spirit = (function(){
         if (err) {
           throw err;
         }
-
-        var loadedTemplate = Twig({data: data.toString()});
+        var loadedTemplate = render({data: data.toString()});
         cache.templates[template] = loadedTemplate;
         $container.html(loadedTemplate.render(templateData));
       });
@@ -29,6 +28,7 @@ Spirit = (function(){
 
   this.load = loadTemplate;
   this.session = session;
+  this.render = render;
 
   // gui.Window.get().maximize();
 

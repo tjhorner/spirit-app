@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "main": "spirit.html",
   "window": {
-    "toolbar": false,
+    "toolbar": true,
     "position": "center",
     "min_width": 500,
     "min_height": 500
