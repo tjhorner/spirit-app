@@ -1,26 +1,27 @@
 Spirit = (function(){
   var gui = require('nw.gui'),
-      Twig = require('twig'),
-      render = Twig.twig,
+      mustache = require('mustache'),
       fs = require('fs'),
       cache = {templates: {}},
-      session = {games: [{title: "The Dank Game"}, {title: "Another Dank Game"}]};
+      session = {games: []},
+      SPIRIT_BASE = "http://spirit.horner.tj";
 
   var loadTemplate = function(template, templateData, container){
     templateData = templateData || {};
     $container = $(container);
+
     if(!cache.templates[template]){
-      fs.readFile('templates/' + template + '.twig', function(err, data){
+      fs.readFile('templates/' + template + '.mst', function(err, data){
         if (err) {
           throw err;
         }
-        var loadedTemplate = render({data: data.toString()});
-        cache.templates[template] = loadedTemplate;
-        $container.html(loadedTemplate.render(templateData));
+        console.log("Caching template \"" + template + "\"...");
+        cache.templates[template] = data.toString();
+        $container.html(mustache.render(data.toString(), templateData));
       });
     }else{
       templateData.cached = true;
-      $container.html(cache.templates[template].render(templateData));
+      $container.html(mustache.render(cache.templates[template], templateData));
     }
 
     return true;
@@ -28,7 +29,6 @@ Spirit = (function(){
 
   this.load = loadTemplate;
   this.session = session;
-  this.render = render;
 
   // gui.Window.get().maximize();
 

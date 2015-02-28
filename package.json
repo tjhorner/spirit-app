@@ -4,12 +4,12 @@
   "version": "0.0.1",
   "main": "spirit.html",
   "window": {
-    "toolbar": true,
+    "toolbar": false,
     "position": "center",
     "min_width": 500,
     "min_height": 500
   },
   "dependencies": {
-    "twig": "^0.8.1"
+    "mustache": "^1.1.0"
   }
 }

@@ -1,4 +1,19 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300,500);
+spirit-grid {
+  display: block;
+  width: 100%;
+  height: 100%; }
+  spirit-grid .grid-left {
+    display: inline-block;
+    width: 20%;
+    margin: 0;
+    float: left; }
+  spirit-grid .grid-right {
+    display: inline-block;
+    width: 80%;
+    margin: 0;
+    float: right; }
+
 spirit-wrapper {
   display: block;
   position: relative;
@@ -61,20 +76,20 @@ spirit-wrapper {
       height: 100%;
       padding: 10px; }
 
-spirit-grid {
-  display: block;
-  width: 100%;
-  height: 100%; }
-  spirit-grid .grid-left {
+spirit-list {
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden; }
+  spirit-list spirit-list-item {
     display: inline-block;
-    width: 20%;
-    margin: 0;
-    float: left; }
-  spirit-grid .grid-right {
-    display: inline-block;
-    width: 80%;
-    margin: 0;
-    float: right; }
+    width: 100%;
+    padding: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+    spirit-list spirit-list-item:nth-of-type(odd) {
+      background: #748BA7; }
+    spirit-list spirit-list-item:nth-of-type(even) {
+      background: #4B688B; }
 
 * * {
   -webkit-user-select: none;
@@ -94,6 +109,6 @@ body {
 h1, h2, h3 {
   font-weight: 100; }
   h1.no-margin, h2.no-margin, h3.no-margin {
-    margin: 0; }
+    margin: 2px 0; }
 
 /*# sourceMappingURL=styles.css.map */

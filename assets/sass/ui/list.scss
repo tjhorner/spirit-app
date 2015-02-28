@@ -1,0 +1,21 @@
+spirit-list{
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  spirit-list-item{
+    display: inline-block;
+    width: 100%;
+    padding: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:nth-of-type(odd){
+      background: $spirit-primary-lighter;
+    }
+
+    &:nth-of-type(even){
+      background: $spirit-primary-light;
+    }
+  }
+}
