@@ -1,5 +1,9 @@
+$header-height: 58px;
+$toolbar-height: 30px;
+
 spirit-wrapper{
   display: block;
+  position: relative;
   color: white;
   width: 100%;
   height: 100%;
@@ -7,7 +11,7 @@ spirit-wrapper{
 
   header{
     width: 100%;
-    display: block;
+    display: inline-block;
     background: $spirit-primary-light;
 
     .header-inner{
@@ -18,19 +22,31 @@ spirit-wrapper{
         display: inline-block;
         margin-right: 5px;
         vertical-align: middle;
-        cursor: pointer;
+        @include transition(color, .1s, ease-in-out);
+
+        &:hover{
+          color: $spirit-primary-darker;
+        }
+
+        &:active, &.active{
+          color: $spirit-primary-dark;
+        }
       }
 
       .logo{
         font-size: 2em;
         padding-right: 10px;
         border-right: 1px solid $spirit-primary-dark;
+
+        &:hover, &:active{
+          color: white;
+        }
       }
     }
   }
 
   spirit-toolbar{
-    display: block;
+    display: inline-block;
     width: 100%;
     padding: 5px 10px;
     background: $spirit-primary-darker;
@@ -41,7 +57,27 @@ spirit-wrapper{
       display: inline-block;
       margin-right: 5px;
       vertical-align: middle;
-      cursor: pointer;
+      @include transition(color, .1s, ease-in-out);
+
+      &:hover{
+        color: $spirit-primary-regular;
+      }
+
+      &:active{
+        color: $spirit-primary-lighter;
+      }
+    }
+  }
+
+  .content{
+    height: calc(100% - (58px + 30px));
+
+    spirit-container{
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
     }
   }
 }

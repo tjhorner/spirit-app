@@ -1,13 +1,14 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300,500);
 spirit-wrapper {
   display: block;
+  position: relative;
   color: white;
   width: 100%;
   height: 100%;
   background: #2B4A6F; }
   spirit-wrapper header {
     width: 100%;
-    display: block;
+    display: inline-block;
     background: #4B688B; }
     spirit-wrapper header .header-inner {
       padding: 10px; }
@@ -16,13 +17,23 @@ spirit-wrapper {
         display: inline-block;
         margin-right: 5px;
         vertical-align: middle;
-        cursor: pointer; }
+        -webkit-transition: color 0.1s ease-in-out;
+        -moz-transition: color 0.1s ease-in-out;
+        -ms-transition: color 0.1s ease-in-out;
+        -o-transition: color 0.1s ease-in-out;
+        transition: color 0.1s ease-in-out; }
+        spirit-wrapper header .header-inner li:hover {
+          color: #051C38; }
+        spirit-wrapper header .header-inner li:active, spirit-wrapper header .header-inner li.active {
+          color: #143153; }
       spirit-wrapper header .header-inner .logo {
         font-size: 2em;
         padding-right: 10px;
         border-right: 1px solid #143153; }
+        spirit-wrapper header .header-inner .logo:hover, spirit-wrapper header .header-inner .logo:active {
+          color: white; }
   spirit-wrapper spirit-toolbar {
-    display: block;
+    display: inline-block;
     width: 100%;
     padding: 5px 10px;
     background: #051C38;
@@ -32,7 +43,38 @@ spirit-wrapper {
       display: inline-block;
       margin-right: 5px;
       vertical-align: middle;
-      cursor: pointer; }
+      -webkit-transition: color 0.1s ease-in-out;
+      -moz-transition: color 0.1s ease-in-out;
+      -ms-transition: color 0.1s ease-in-out;
+      -o-transition: color 0.1s ease-in-out;
+      transition: color 0.1s ease-in-out; }
+      spirit-wrapper spirit-toolbar li:hover {
+        color: #2B4A6F; }
+      spirit-wrapper spirit-toolbar li:active {
+        color: #748BA7; }
+  spirit-wrapper .content {
+    height: calc(100% - (58px + 30px)); }
+    spirit-wrapper .content spirit-container {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      padding: 10px; }
+
+spirit-grid {
+  display: block;
+  width: 100%;
+  height: 100%; }
+  spirit-grid .grid-left {
+    display: inline-block;
+    width: 20%;
+    margin: 0;
+    float: left; }
+  spirit-grid .grid-right {
+    display: inline-block;
+    width: 80%;
+    margin: 0;
+    float: right; }
 
 * * {
   -webkit-user-select: none;
@@ -41,8 +83,17 @@ spirit-wrapper {
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
+html, body {
+  height: 100%; }
+
 body {
   font-family: "Roboto";
-  margin: 0; }
+  margin: 0;
+  overflow: hidden; }
+
+h1, h2, h3 {
+  font-weight: 100; }
+  h1.no-margin, h2.no-margin, h3.no-margin {
+    margin: 0; }
 
 /*# sourceMappingURL=styles.css.map */

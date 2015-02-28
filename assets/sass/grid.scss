@@ -1,0 +1,19 @@
+spirit-grid{
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  .grid-left{
+    display: inline-block;
+    width: 20%;
+    margin: 0;
+    float: left;
+  }
+
+  .grid-right{
+    display: inline-block;
+    width: 80%;
+    margin: 0;
+    float: right;
+  }
+}
