@@ -75,11 +75,14 @@ spirit-wrapper {
       width: 100%;
       height: 100%;
       padding: 10px; }
+      spirit-wrapper .content spirit-container.no-margin {
+        padding: 0; }
 
 spirit-list {
   display: inline-block;
   text-overflow: ellipsis;
-  overflow: hidden; }
+  overflow: hidden;
+  width: 100%; }
   spirit-list spirit-list-item {
     display: inline-block;
     width: 100%;

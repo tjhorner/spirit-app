@@ -4,7 +4,14 @@ Spirit = (function(){
       fs = require('fs'),
       cache = {templates: {}},
       session = {games: []},
-      SPIRIT_BASE = "http://spirit.horner.tj";
+      SPIRIT_BASE = "http://spirit.horner.tj/";
+
+  $.ajax({
+    url: SPIRIT_BASE + "games.json",
+    success: function(d){
+      session.games = d;
+    }
+  });
 
   var loadTemplate = function(template, templateData, container){
     templateData = templateData || {};
@@ -16,34 +23,39 @@ Spirit = (function(){
           throw err;
         }
         console.log("Caching template \"" + template + "\"...");
+
         cache.templates[template] = data.toString();
         $container.html(mustache.render(data.toString(), templateData));
+        listen($container);
       });
     }else{
       templateData.cached = true;
       $container.html(mustache.render(cache.templates[template], templateData));
+      listen($container);
     }
 
     return true;
   }
 
-  this.load = loadTemplate;
+  var listen = function(el){
+    $.each($(el).find("[data-template]"), function(index, element){
+      var $el = $(element);
+      var $container = $("#container-" + $el.attr("data-template-container"));
+      $el.click(function(){
+        loadTemplate($el.attr("data-template"), eval($el.attr("data-template-data")), $container);
+      });
+    });
+  }
+
+  // this.load = loadTemplate;
+  this.listen = listen;
   this.session = session;
 
-  // gui.Window.get().maximize();
+  gui.Window.get().maximize();
 
   return this;
 }());
 
 $(document).ready(function(){
-  $container = $("spirit-container");
-
-  $.each($("[data-template]"), function(index, element){
-    $el = $(element);
-    $el.click(function(){
-      $("li.active").removeClass("active");
-      $el.addClass("active");
-      Spirit.load($el.attr("data-template"), Spirit.session, $container);
-    });
-  });
+  Spirit.listen("spirit-wrapper");
 });

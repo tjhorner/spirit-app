@@ -3,11 +3,14 @@
     <h2 class="no-margin">Games</h2>
     <spirit-list>
       {{#games}}
-        <spirit-list-item>{{ title }}</spirit-list-item>
+        <spirit-list-item data-template="game"
+                          data-template-container="game"
+                          data-template-data="Spirit.session.games[{{ id }}-1]">{{ title }}</spirit-list-item>
       {{/games}}
     </spirit-list>
   </div>
   <div class="grid-right">
-
+    <spirit-container id="container-game" class="no-margin" style="padding-left: 10px;">
+    </spirit-container>
   </div>
 </spirit-grid>
