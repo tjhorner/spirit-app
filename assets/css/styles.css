@@ -1,0 +1,48 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300,500);
+spirit-wrapper {
+  display: block;
+  color: white;
+  width: 100%;
+  height: 100%;
+  background: #2B4A6F; }
+  spirit-wrapper header {
+    width: 100%;
+    display: block;
+    background: #4B688B; }
+    spirit-wrapper header .header-inner {
+      padding: 10px; }
+      spirit-wrapper header .header-inner li {
+        list-style-type: none;
+        display: inline-block;
+        margin-right: 5px;
+        vertical-align: middle;
+        cursor: pointer; }
+      spirit-wrapper header .header-inner .logo {
+        font-size: 2em;
+        padding-right: 10px;
+        border-right: 1px solid #143153; }
+  spirit-wrapper spirit-toolbar {
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    background: #051C38;
+    color: #4B688B; }
+    spirit-wrapper spirit-toolbar li {
+      list-style-type: none;
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: middle;
+      cursor: pointer; }
+
+* * {
+  -webkit-user-select: none;
+  cursor: default;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+body {
+  font-family: "Roboto";
+  margin: 0; }
+
+/*# sourceMappingURL=styles.css.map */
