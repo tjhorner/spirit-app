@@ -23,6 +23,7 @@
   -webkit-user-select: none;
   cursor: default;
   @include fix-padding();
+  outline: none;
 }
 
 html, body{
@@ -35,8 +36,16 @@ body{
   overflow: hidden;
 }
 
+.center{
+  text-align: center;
+}
+
 h1, h2, h3{
   font-weight: 100;
+
+  &.hero{
+    font-size: 3em;
+  }
 
   &.no-margin{
     margin: 2px 0;

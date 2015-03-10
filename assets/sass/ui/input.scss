@@ -1,0 +1,25 @@
+button, input[type="button"], input[type="submit"]{
+  @include transition(background, .2s, ease-in-out);
+  display: inline-block;
+  background: $spirit-primary-darker;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  border: none;
+
+  &:hover{
+    background: $spirit-primary-dark;
+  }
+
+  &:active{
+    background: $spirit-primary-light;
+  }
+}
+
+input[type="text"], input[type="password"], input[type="email"]{
+  cursor: text;
+}

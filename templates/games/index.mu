@@ -3,7 +3,7 @@
     <h2 class="no-margin">Games</h2>
     <spirit-list>
       {{#games}}
-        <spirit-list-item data-template="game"
+        <spirit-list-item data-template="games/game"
                           data-template-container="game"
                           data-template-data="Spirit.session.games[{{ id }}-1]">{{ title }}</spirit-list-item>
       {{/games}}

@@ -20,11 +20,11 @@ spirit-wrapper {
   color: white;
   width: 100%;
   height: 100%;
-  background: #2B4A6F; }
+  background: #2b4a6f; }
   spirit-wrapper header {
     width: 100%;
     display: inline-block;
-    background: #4B688B; }
+    background: #4b688b; }
     spirit-wrapper header .header-inner {
       padding: 10px; }
       spirit-wrapper header .header-inner li {
@@ -38,7 +38,7 @@ spirit-wrapper {
         -o-transition: color 0.1s ease-in-out;
         transition: color 0.1s ease-in-out; }
         spirit-wrapper header .header-inner li:hover {
-          color: #051C38; }
+          color: #051c38; }
         spirit-wrapper header .header-inner li:active, spirit-wrapper header .header-inner li.active {
           color: #143153; }
       spirit-wrapper header .header-inner .logo {
@@ -51,8 +51,8 @@ spirit-wrapper {
     display: inline-block;
     width: 100%;
     padding: 5px 10px;
-    background: #051C38;
-    color: #4B688B; }
+    background: #051c38;
+    color: #4b688b; }
     spirit-wrapper spirit-toolbar li {
       list-style-type: none;
       display: inline-block;
@@ -64,9 +64,9 @@ spirit-wrapper {
       -o-transition: color 0.1s ease-in-out;
       transition: color 0.1s ease-in-out; }
       spirit-wrapper spirit-toolbar li:hover {
-        color: #2B4A6F; }
+        color: #2b4a6f; }
       spirit-wrapper spirit-toolbar li:active {
-        color: #748BA7; }
+        color: #748ba7; }
   spirit-wrapper .content {
     height: calc(100% - (58px + 30px)); }
     spirit-wrapper .content spirit-container {
@@ -90,16 +90,41 @@ spirit-list {
     overflow: hidden;
     text-overflow: ellipsis; }
     spirit-list spirit-list-item:nth-of-type(odd) {
-      background: #748BA7; }
+      background: #748ba7; }
     spirit-list spirit-list-item:nth-of-type(even) {
-      background: #4B688B; }
+      background: #4b688b; }
+
+button, input[type="button"], input[type="submit"] {
+  -webkit-transition: background 0.2s ease-in-out;
+  -moz-transition: background 0.2s ease-in-out;
+  -ms-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
+  display: inline-block;
+  background: #051c38;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+  border: none; }
+  button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+    background: #143153; }
+  button:active, input[type="button"]:active, input[type="submit"]:active {
+    background: #4b688b; }
+
+input[type="text"], input[type="password"], input[type="email"] {
+  cursor: text; }
 
 * * {
   -webkit-user-select: none;
   cursor: default;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  outline: none; }
 
 html, body {
   height: 100%; }
@@ -109,9 +134,12 @@ body {
   margin: 0;
   overflow: hidden; }
 
+.center {
+  text-align: center; }
+
 h1, h2, h3 {
   font-weight: 100; }
+  h1.hero, h2.hero, h3.hero {
+    font-size: 3em; }
   h1.no-margin, h2.no-margin, h3.no-margin {
     margin: 2px 0; }
-
-/*# sourceMappingURL=styles.css.map */
