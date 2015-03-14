@@ -3,14 +3,65 @@ Spirit = (function(){
       fs = require('fs'),
       mustache = require('mustache'),
       cache = {templates: {}},
-      session = {games: {}, user: {}},
+      session = {games: {}, user: {}, steam: {}},
+      Steam = require('steam'),
       SPIRIT_BASE = "http://spirit.horner.tj/",
+      API_BASE = SPIRIT_BASE + "api/",
       PROGRAM_DIRECTORY = process.env["PROGRAMFILES"] + "\\Spirit\\" || "~/.local/Spirit/",
       APPDATA_DIRECTORY = process.env["APPDATA"] + "\\Spirit\\" || "~/.local/Spirit/data/";
 
+  var triggers = {
+    login: function(params){
+      $.post(API_BASE + "authenticate",
+        {
+          user: {
+            username: params["username"],
+            password: params["password"]
+          }
+        },
+        function(d){
+          console.log(d);
+          if(d.success){
+            session.user = d.user;
+            // TODO add error handling here
+            fs.writeFile(PROGRAM_DIRECTORY + "user.json", JSON.stringify(d.user));
+            window.open("spirit.html");
+            gui.Window.get().close(true);
+          }else{
+            alert(d.message);
+          }
+        });
+    },
+    logout: function(){
+      fs.unlink(PROGRAM_DIRECTORY + "user.json");
+      window.location = "login.html";
+    }
+  };
+
+  var api = {
+
+  };
+
+  var connectWithSteam = function(username, password){
+    var client = new Steam.SteamClient();
+
+    client.logOn({
+      accountName: username,
+      password: password
+    });
+
+    client.on('error', function(err){
+      if(err && err.eresult === client.EResult.AccountLogonDenied){
+        prompt("Please enter your SteamGuard code:");
+      }
+    });
+
+    session.steam.client = client;
+  };
+
   // The installer installs everything in the 32-bit program files, will need to fix later.
   if(process.env["PROGRAMFILES(x86)"]){
-    PROGRAM_DIRECTORY = process.env["PROGRAMFILES(x86)"] + "\\Spirit";
+    PROGRAM_DIRECTORY = process.env["PROGRAMFILES(x86)"] + "\\Spirit\\";
   }
 
   function handle(error){
@@ -62,6 +113,20 @@ Spirit = (function(){
       var $container = $("#container-" + $el.attr("data-template-container"));
       $el.click(function(){
         loadTemplate($el.attr("data-template"), eval($el.attr("data-template-data")), $container);
+      });
+    });
+
+    $.each($(el).find("[data-trigger]"), function(index, element){
+      var $el = $(element);
+      $el.click(function(){
+        var params = {};
+        console.log($el.attr("id"));
+        $.each($("input[data-for-trigger=\"" + $el.attr("id") + "\"]"), function(i, e){
+          params[$(e).attr("id")] = $(e).val();
+          console.log($(e).val());
+        });
+        triggers[$el.attr("data-trigger")](params);
+        console.log("#triggered");
       });
     });
   };

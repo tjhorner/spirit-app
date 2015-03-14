@@ -10,6 +10,7 @@
     "min_height": 500
   },
   "dependencies": {
-    "mustache": "^1.1.0"
+    "mustache": "^1.1.0",
+    "steam": "^0.6.8"
   }
 }

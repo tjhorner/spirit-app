@@ -12,4 +12,6 @@ $(document).ready(function(){
   win.setBadgeLabel("");
 
   win.setPosition("center");
+
+  Spirit.listen("spirit-wrapper");
 });
