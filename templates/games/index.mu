@@ -7,6 +7,9 @@
                           data-template-container="game"
                           data-template-data="Spirit.getGame({{ id }})">{{ title }}</spirit-list-item>
       {{/games}}
+      {{^games}}
+        Loading...
+      {{/games}}
     </spirit-list>
   </div>
   <div class="grid-right">

@@ -4,8 +4,11 @@ Spirit = (function(){
       http = require('http'),
       https = require('https'),
       url = require('url'),
-      unzip = require('unzip'),
+      yauzl = require('yauzl'),
+      mkdirp = require('mkdirp'),
       mustache = require('mustache'),
+      exec = require('child_process').exec,
+      os = require('os'),
       cache = {templates: {}},
       session = {games: [], user: {}, steam: {}},
       Steam = require('steam'),
@@ -13,6 +16,23 @@ Spirit = (function(){
       API_BASE = SPIRIT_BASE + "api/",
       PROGRAM_DIRECTORY = process.env["PROGRAMFILES"] ? process.env["PROGRAMFILES"] + "\\Spirit\\" : "/home/" + process.env["USER"] + "/.local/Spirit/",
       APPDATA_DIRECTORY = process.env["APPDATA"] ? process.env["APPDATA"] + "\\Spirit\\" : "/home/" + process.env["USER"] + "/.local/Spirit/data/";
+
+  var PLATFORM = (function(){
+    switch(os.platform()){
+      case 'win32':
+        return "windows";
+        break;
+      case 'darwin':
+        return "osx";
+        break;
+      case 'linux':
+        return "linux";
+        break;
+      default:
+        return "linux";
+        break;
+    }
+  }());
 
   var triggers = {
     login: function(params){
@@ -64,8 +84,33 @@ Spirit = (function(){
               console.log("end");
               file.on('finish', function () {
                 file.close();
-                fs.createReadStream(APPDATA_DIRECTORY + "game_" + game.id + "_" + game.current_revision.version + ".spk")
-                                   .pipe(unzip.Extract({ path: APPDATA_DIRECTORY + "games/" + params["id"] + "_content" }));
+              });
+              mkdirp(_gameDir(game), function(){
+                yauzl.open(APPDATA_DIRECTORY + "game_" + game.id + "_" + game.current_revision.version + ".spk", function(err, zipfile) {
+                  if (err) throw err;
+                  zipfile.on("entry", function(entry) {
+                    if (/\/$/.test(entry.fileName)) {
+                      // directory file names end with '/'
+                      return;
+                    }
+
+                    zipfile.openReadStream(entry, function(err, readStream) {
+                      if (err) throw err;
+                      // ensure parent directory exists, and then:
+                      readStream.pipe(fs.createWriteStream(_gameDir(game) + entry.fileName));
+                    });
+                  });
+
+                  zipfile.on("end", function(){
+                    console.log("end zipfile");
+                    zipfile.close();
+                    setTimeout(function(){
+                      fs.unlink(APPDATA_DIRECTORY + "game_" + game.id + "_" + game.current_revision.version + ".spk");
+                      game.downloaded = true;
+                      loadTemplate("games/game", game, $("#container-game"));
+                    }, 500);
+                  });
+                });
               });
             });
           });
@@ -74,6 +119,25 @@ Spirit = (function(){
           req.on('error', function(e) {
             console.error(e);
           });
+        }
+      });
+    },
+    play: function(params){
+      var manifestFile = _gameDir({id: params["id"]}) + "spirit.json";
+      fs.readFile(manifestFile, 'utf8', function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+        var manifest = JSON.parse(data);
+        if(manifest.scripts.start[PLATFORM] && !manifest.scripts.start[PLATFORM].unsupported_error){
+          exec("cd " + _gameDir({id: params["id"]}) + " && " + manifest.scripts.start[PLATFORM].exec);
+        }else{
+          if(manifest.scripts.start[PLATFORM] && manifest.scripts.start[PLATFORM].unsupported_error){
+            var err = manifest.scripts.start[PLATFORM].unsupported_error;
+          }else{
+            var err = "Sorry! This game doesn't support your platform right now."
+          }
+          alert(err);
         }
       });
     }
@@ -197,11 +261,31 @@ Spirit = (function(){
     return {then: function(f){f()}};
   };
 
+  var _gameDir = function(game){
+    return APPDATA_DIRECTORY + "games/" + game.id + "/";
+  }
+
+  var _gameDownloaded = function(game){
+    try {
+      stats = fs.lstatSync(_gameDir(game));
+
+      if (stats.isDirectory()) {
+        return true;
+      }
+    }
+    catch (e) {
+      return false;
+    }
+  };
+
   var getGame = function(id){
     console.log("game id: " + id);
     for(i in session.games){
       var game = session.games[i];
-      if(game.id === id) return game;
+      if(game.id === id){
+        game.downloaded = _gameDownloaded(game);
+        return game;
+      }
     }
   };
 
