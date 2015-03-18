@@ -38,10 +38,6 @@ Spirit = (function(){
     }
   };
 
-  var api = {
-
-  };
-
   var connectWithSteam = function(username, password){
     var client = new Steam.SteamClient();
 
@@ -68,13 +64,6 @@ Spirit = (function(){
     alert("Bummer. Something went wrong (" + error + "). If you keep seeing this, please contact us.");
     process.exit(1);
   }
-
-  $.ajax({
-    url: SPIRIT_BASE + "games.json",
-    success: function(d){
-      session.games = d;
-    }
-  });
 
   var extend = function(method, func){
     this[method] = func;
@@ -145,6 +134,16 @@ Spirit = (function(){
           }else{
             // READY!
             session.user = JSON.parse(data);
+            $("[data-value=\"user.username\"]").text(session.user.username);
+
+            $.ajax({
+              url: API_BASE + "my_games",
+              data: {token: session.user.token},
+              success: function(d){
+                session.games = d;
+              }
+            });
+
             gui.Window.get().maximize();
           }
         });
