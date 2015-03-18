@@ -5,7 +5,7 @@
       {{#games}}
         <spirit-list-item data-template="games/game"
                           data-template-container="game"
-                          data-template-data="Spirit.session.games[{{ id }}-1]">{{ title }}</spirit-list-item>
+                          data-template-data="Spirit.getGame({{ id }})">{{ title }}</spirit-list-item>
       {{/games}}
     </spirit-list>
   </div>

@@ -1,9 +1,13 @@
 Spirit = (function(){
   var gui = require('nw.gui'),
       fs = require('fs'),
+      http = require('http'),
+      https = require('https'),
+      url = require('url'),
+      unzip = require('unzip'),
       mustache = require('mustache'),
       cache = {templates: {}},
-      session = {games: {}, user: {}, steam: {}},
+      session = {games: [], user: {}, steam: {}},
       Steam = require('steam'),
       SPIRIT_BASE = "http://spirit.horner.tj/",
       API_BASE = SPIRIT_BASE + "api/",
@@ -35,6 +39,43 @@ Spirit = (function(){
     logout: function(){
       fs.unlink(PROGRAM_DIRECTORY + "user.json");
       window.location = "login.html";
+    },
+    download: function(params){
+      $.ajax({
+        url: SPIRIT_BASE + "games/" + params["id"] + ".json",
+        success: function(game){
+          var file = fs.createWriteStream(APPDATA_DIRECTORY + "game_" + game.id + "_" + game.current_revision.version + ".spk");
+          var uri = url.parse(game.current_revision.content_url);
+          var options = {
+            host: uri.host,
+            port: 443,
+            path: uri.path,
+            method: 'GET'
+          };
+
+          var req = https.request(options, function(res) {
+            res.on('data', function(d) {
+              console.log("data");
+              file.write(d);
+            });
+
+            // so close to callback hell pls fix
+            res.on('end', function(){
+              console.log("end");
+              file.on('finish', function () {
+                file.close();
+                fs.createReadStream(APPDATA_DIRECTORY + "game_" + game.id + "_" + game.current_revision.version + ".spk")
+                                   .pipe(unzip.Extract({ path: APPDATA_DIRECTORY + "games/" + params["id"] + "_content" }));
+              });
+            });
+          });
+          req.end();
+
+          req.on('error', function(e) {
+            console.error(e);
+          });
+        }
+      });
     }
   };
 
@@ -111,7 +152,7 @@ Spirit = (function(){
         var params = {};
         console.log($el.attr("id"));
         $.each($("input[data-for-trigger=\"" + $el.attr("id") + "\"]"), function(i, e){
-          params[$(e).attr("id")] = $(e).val();
+          params[$(e).attr("name")] = $(e).val();
           console.log($(e).val());
         });
         triggers[$el.attr("data-trigger")](params);
@@ -156,9 +197,18 @@ Spirit = (function(){
     return {then: function(f){f()}};
   };
 
+  var getGame = function(id){
+    console.log("game id: " + id);
+    for(i in session.games){
+      var game = session.games[i];
+      if(game.id === id) return game;
+    }
+  };
+
   this.init = init;
   this.listen = listen;
   this.session = session;
+  this.getGame = getGame;
 
   return this;
 }());
