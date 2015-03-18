@@ -7,8 +7,8 @@ Spirit = (function(){
       Steam = require('steam'),
       SPIRIT_BASE = "http://spirit.horner.tj/",
       API_BASE = SPIRIT_BASE + "api/",
-      PROGRAM_DIRECTORY = process.env["PROGRAMFILES"] + "\\Spirit\\" || "~/.local/Spirit/",
-      APPDATA_DIRECTORY = process.env["APPDATA"] + "\\Spirit\\" || "~/.local/Spirit/data/";
+      PROGRAM_DIRECTORY = process.env["PROGRAMFILES"] ? process.env["PROGRAMFILES"] + "\\Spirit\\" : "/home/" + process.env["USER"] + "/.local/Spirit/",
+      APPDATA_DIRECTORY = process.env["APPDATA"] ? process.env["APPDATA"] + "\\Spirit\\" : "/home/" + process.env["USER"] + "/.local/Spirit/data/";
 
   var triggers = {
     login: function(params){
